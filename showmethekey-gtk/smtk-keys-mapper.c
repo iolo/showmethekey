@@ -636,6 +636,11 @@ char *smtk_keys_mapper_get_compact(SmtkKeysMapper *mapper, SmtkEvent *event)
 			    xkb_keymap_mod_get_index(mapper->xkb_keymap,
 						     XKB_MOD_NAME_SHIFT)))
 			g_string_append(buffer, "⇧");
+	// show visible keys only(ignore ascii char without modifiers)
+	if (*(main_key + 1) == '\0' && buffer->len == 0) {
+		g_string_free(buffer, TRUE);
+		return NULL;
+	}
 	g_string_append(buffer, main_key);
 	g_free(main_key);
 	return g_string_free(buffer, FALSE);
